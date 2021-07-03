@@ -1,0 +1,196 @@
+#ifndef MYLIST
+#define MYLIST
+#include <iostream>
+using namespace std;
+
+
+template <typename T>
+class MyList
+{
+	
+	
+
+public:
+	MyList();
+	void push_back(T data);
+	void pop_back();
+	void pop_front();
+	void insert(int index, T data);
+	void remove_at_index(int ind);
+	void remove(T data);
+	int getSize() const
+	{
+		return size;
+	}
+	
+	T & operator[]( int index1);
+	~MyList()
+	{
+		if (head == nullptr)
+		{
+			return;
+		}
+		Node<T>* current = head;
+		while (current != nullptr)
+		{
+			delete head;
+			head = current->nextt;
+			current = current->nextt;
+		}
+	}
+	
+	
+private:
+
+
+	template <typename T>
+	class Node {
+		
+
+	public:
+		Node(T data, Node<T>* nextt = nullptr) {
+			this->data = data;
+			this->nextt = nextt;
+		}
+		T data;
+		Node<T>* nextt;
+
+
+	};
+	Node<T>* head;
+	int size;
+};
+
+template <typename T>
+ void MyList<T>::pop_front() {
+	 Node<T>* ind = head;
+	 head = head->nextt;
+	 delete ind;
+	 --size;
+}
+
+template <typename T>
+  MyList<T>::MyList() {
+	head = nullptr;
+	size = 0;
+}
+
+template <typename T>
+void MyList<T>::push_back(T data1) {
+	
+	if (head == nullptr) {
+		head = new Node<T>(data1);
+	}
+	   else {
+		
+		Node<T> *ind = this->head;
+	    
+		   while (ind->nextt!= nullptr){
+			  
+			ind= ind->nextt;
+		   
+		   }
+
+		   
+		       ind->nextt= new Node<T>(data1);
+			 
+			   
+	    }
+	
+	
+	++size;
+	
+}
+
+template <typename T>
+T & MyList<T>::operator[]( int index1) {
+	
+	
+		
+		Node<T>  *ind=this->head;
+		if (index1 == 0) {
+
+			return ind->data;
+		}
+		else {
+			while(index1!=0){
+			
+				
+				ind = ind->nextt;
+				
+				index1--;
+			}
+			
+			return ind->data;
+		}
+	
+
+	
+}
+
+template <typename T>
+void MyList<T>::remove_at_index(int index){ 
+	if (index == 0) {
+		pop_front();
+	}
+	else {
+		int x = index;
+		Node<T>* ind = this->head;
+		while (x != 1) {
+			--x;
+			ind = ind->nextt;
+
+		}
+		Node<T>* tmp = ind->nextt;
+		ind->nextt = tmp->nextt;
+		delete tmp;
+		--size;
+	}
+
+}
+
+template <typename T>
+void MyList<T>::remove(T datas) {
+	int x = 0;
+	Node<T>  *ind = this->head;
+	Node<T>* ind1 = this->head;
+	while (ind->nextt!= nullptr) {
+		if (ind->data == datas) {
+			remove_at_index(x);
+			ind = ind1;
+			--x;
+		}
+		++x;
+		ind1 = ind;
+		ind = ind->nextt;
+
+	}
+}
+
+template <typename T>
+void MyList<T>::pop_back() {
+	remove_at_index(size - 1);
+}
+
+template <typename T>
+void MyList<T>::insert(int indx, T data1) {
+	Node<T>* ind = this->head;
+	if (indx == 0) {
+
+		ind->data = data1;
+	}
+	else {
+		while (indx != 0) {
+
+
+			ind = ind->nextt;
+
+			indx--;
+		}
+
+		ind->data = data1;
+	}
+}
+
+
+#endif // MyList
